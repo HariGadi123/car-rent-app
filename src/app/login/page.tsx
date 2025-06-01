@@ -9,6 +9,7 @@ import { ValidateLOgin } from "./validate";
 import axios from "axios";
 import CustomSnackbar from "../components/CustomSnackbar/CustomSnackbar";
 import { AlertColor } from "@mui/material";
+import { base_url } from "../Utils/network";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -39,7 +40,7 @@ export default function LoginPage() {
         .then(async (response) => {
           if (response === "success") {
             //call post api here...
-            let response = await axios.post(`/api/login`, data);
+            let response = await axios.post(`${base_url}/auth/login`, data);
             if (response?.status === 200 || response?.status === 201) {
               setFormData({
                 username: "",
@@ -100,7 +101,14 @@ export default function LoginPage() {
             <h1>Log in</h1>
             <p>
               If you don't have an account register <br />
-              You can <span>Register here!</span>
+              You can{" "}
+              <span
+                onClick={() => {
+                  router.push("/signup");
+                }}
+              >
+                Register here!
+              </span>
             </p>
             <div>
               <CustomTextField

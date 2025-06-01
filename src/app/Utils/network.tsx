@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie"; // Install with: npm i js-cookie
 
-export const base_url = "https://carrental-150p.onrender.com"; // Replace with actual URL
+export const base_url = "https://carrental-150p.onrender.com/"; // Replace with actual URL
 
 // Utility to get token from cookies
 function getTokenFromCookie(): string | null {

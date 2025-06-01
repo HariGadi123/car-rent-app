@@ -1,37 +1,46 @@
-// app/api/signup/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const formData = await req.formData();
+  try {
+    const body = await req.json(); // ✅ parse JSON
 
-  const name = formData.get('name');
-  const username = formData.get('username');
-  const password = formData.get('password');
+    const { fullName, email, password, roles } = body;
 
-  const externalRes = await fetch('https://carrental-150p.onrender.com/auth/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, username, password }),
-  });
+    const externalRes = await fetch('https://carrental-150p.onrender.com/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fullName: fullName,
+        email: email,
+        password : password,
+        roles : roles,
+      }),
+    });
 
-  if (!externalRes.ok) {
-    return NextResponse.json({ error: 'Signup failed' }, { status: 400 });
+    if (!externalRes.ok) {
+      console.log(externalRes, "externalRes")
+      return NextResponse.json({ error: 'Signup failed' }, { status: 400 });
+    }
+
+    const data = await externalRes.json();
+    const token = data.token;
+
+    if (!token) {
+      return NextResponse.json({ error: 'No token returned' }, { status: 500 });
+    }
+
+    const res = NextResponse.json({ message: "User registered successfully" });
+
+    res.cookies.set('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 60 * 60 * 24, // 1 day
+    });
+
+    return res;
+  } catch (error) {
+    console.error("Signup error:", error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-
-  const data = await externalRes.json();
-  const token = data.token;
-
-  if (!token) {
-    return NextResponse.json({ error: 'No token returned' }, { status: 500 });
-  }
-
-  const res = NextResponse.redirect('/home');
-  res.cookies.set('auth_token', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: 60 * 60 * 24,
-  });
-
-  return res;
 }
