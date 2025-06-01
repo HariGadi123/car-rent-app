@@ -1,56 +1,147 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./index.module.css";
+import CustomTextField from "../components/CustomTextField/CustomTextField";
+import CustomButton from "../components/CustomButton/CustomButton";
+import { ValidateLOgin } from "./validate";
+import axios from "axios";
+import CustomSnackbar from "../components/CustomSnackbar/CustomSnackbar";
+import { AlertColor } from "@mui/material";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const [formErrors, setFormErrors] = useState({
+    error: false,
+    username: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [severity, setSeverity] = useState<AlertColor>("success");
 
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: email,
-        password,
-      }),
-    });
-
-    if (res.ok) {
-      router.push('/home');
-    } else {
-      const { error } = await res.json();
-      setError(error || 'Login failed');
+  const handleLogin = async (event: any) => {
+    event.preventDefault();
+    try {
+      let data = {
+        username: formData?.username,
+        password: formData?.password,
+      };
+      setLoading(true);
+      ValidateLOgin(formData)
+        .then(async (response) => {
+          if (response === "success") {
+            //call post api here...
+            let response = await axios.post(`/api/login`, data);
+            if (response?.status === 200 || response?.status === 201) {
+              setFormData({
+                username: "",
+                password: "",
+              });
+              setFormErrors({
+                error: false,
+                username: "",
+                password: "",
+              });
+              setLoading(false);
+              setMessage("User successfully logged in!");
+              setSeverity("success");
+              setOpen(true);
+              setTimeout(() => {
+                router.push("/home");
+              }, 1500);
+            }
+          }
+        })
+        .catch((error) => {
+          setFormErrors(error);
+          setLoading(false);
+          setMessage("Please fill all required fields.");
+          setSeverity("error");
+          setOpen(true);
+        });
+    } catch (error) {
+      console.log(error);
+      setMessage("Something went wrong. Please try again.");
+      setSeverity("error");
+      setOpen(true);
+      setLoading(false);
     }
   };
 
+  const handleChange = (event: any) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+  const handleClose = async (event: any) => {
+    try {
+      setOpen(false);
+      setMessage("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <input
-        type="email"
-        value={email}
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-        required
+    <>
+      <div className={styles.mainContainer}>
+        <div className={styles.leftContainer}></div>
+        <div className={styles.rightContainer}>
+          <div className={styles.cardCon}>
+            <h1>Log in</h1>
+            <p>
+              If you don't have an account register <br />
+              You can <span>Register here!</span>
+            </p>
+            <div>
+              <CustomTextField
+                name="username"
+                value={formData?.username}
+                label="Email"
+                placeholder="Enter Email"
+                required={true}
+                type="text"
+                onChange={handleChange}
+                error={!!formErrors?.username}
+                helperText={formErrors?.username}
+              />
+            </div>
+            <div>
+              <CustomTextField
+                label="Password"
+                placeholder="Enter password"
+                type="password"
+                name="password"
+                required={true}
+                value={formData?.password}
+                onChange={handleChange}
+                error={!!formErrors?.password}
+                helperText={formErrors?.password}
+              />
+            </div>{" "}
+            <CustomButton
+              title="Submit"
+              onClick={handleLogin}
+              loading={loading}
+            />
+          </div>
+        </div>
+      </div>
+      <CustomSnackbar
+        open={open}
+        message={message}
+        severity={severity}
+        onClose={handleClose}
       />
-      <input
-        type="password"
-        value={password}
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    </>
   );
 }
