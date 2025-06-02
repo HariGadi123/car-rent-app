@@ -44,9 +44,19 @@ export default function LoginPage() {
     event.preventDefault();
     try {
       let data = {
-        fullName: formData?.fullName,
-        email: formData?.email,
-        password: formData?.password,
+        fullName: "Hari",
+        email: "john@example.com",
+        password: "securepass123",
+        phoneNumber: "9876543210",
+        drivingLicenseNumber: "DL12345678",
+        dateOfBirth: "1995-06-15",
+        gender: "MALE",
+        address: {
+          street: "123 Main St",
+          city: "Springfield",
+          state: "IL",
+          zipCode: "62704",
+        },
         roles: [
           {
             roleName: "ROLE_USER",
