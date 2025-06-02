@@ -41,7 +41,7 @@ function header() {
     redirect(item?.url);
   };
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ background: "#143f6b" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
