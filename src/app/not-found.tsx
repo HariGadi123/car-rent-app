@@ -13,9 +13,9 @@ const page = () => {
   };
   return (
     <div>
-      <h1>404</h1>
+      {/* <h1>404</h1>
       <p>Sorry, Page Not Found</p>
-      <CustomButton title="Back To Home" onClick={handleBack} />
+      <CustomButton title="Back To Home" onClick={handleBack} /> */}
     </div>
   );
 };
