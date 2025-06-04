@@ -40,3 +40,25 @@
   align-items: center;
   gap: 20px;
 }
+
+/* Not Found Styles... */
+
+.notFoundContainer {
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.notFoundContainer h1 {
+  color: #143f6b;
+  font-size: 30px;
+  font-weight: 600;
+}
+.notFoundContainer p {
+  color: #143f6b;
+  font-size: 20px;
+  font-weight: 500;
+}
