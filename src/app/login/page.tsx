@@ -40,7 +40,12 @@ export default function LoginPage() {
         .then(async (response) => {
           if (response === "success") {
             //call post api here...
-            let response = await axios.post(`/api/login`, data);
+            let response = await axios.post("/auth/login", data, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true, // only if cookies are used
+            });
             if (response?.status === 200 || response?.status === 201) {
               setFormData({
                 username: "",

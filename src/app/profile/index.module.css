@@ -1,0 +1,28 @@
+.mainContainer {
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.wrapperContainer {
+  max-width: 1536px;
+  margin: 0px auto;
+  display: flex;
+  flex-direction: row;
+  gap: 5%;
+}
+
+.leftContainer {
+  width: 25%;
+  border: 0.5px solid black;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.rightContainer {
+  width: 70%;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 0.5px solid black;
+  border-radius: 10px;
+}
