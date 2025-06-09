@@ -44,8 +44,8 @@ export default function LoginPage() {
     event.preventDefault();
     try {
       let data = {
-        fullName: "Hari",
-        email: "john@example.com",
+        fullName: formData?.fullName,
+        email: formData?.email,
         password: "securepass123",
         phoneNumber: "9876543210",
         drivingLicenseNumber: "DL12345678",
@@ -73,7 +73,12 @@ export default function LoginPage() {
         .then(async (response) => {
           if (response === "success") {
             //call post api here...
-            let response = await axios.post(`/api/signup`, data);
+            let response = await axios.post("/auth/register", data, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true, // only if cookies are used
+            });
             if (response?.status === 200 || response?.status === 201) {
               setFormData({
                 fullName: "",
