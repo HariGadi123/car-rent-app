@@ -1,0 +1,36 @@
+.mainContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.addressCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #70a8e2;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  width: 100%;
+}
+
+
+.editCon {
+  width: max-content;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.editCon span {
+  color: white;
+}

@@ -1,0 +1,65 @@
+.mainContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.emergencyCard {
+  display: flex;
+  flex-direction: column;
+  background-color: #70a8e2;
+  width: 70%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.editCon {
+  width: max-content;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.editCon span {
+  color: white;
+}
+
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin: 20px 0px;
+}
+.detailItem {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.detailItem h3 {
+  width: 40%;
+  font-size: 18px;
+  font-weight: 500;
+}
+.detailItem span {
+  width: 10%;
+  font-size: 18px;
+  font-weight: 600;
+}
+.detailItem p {
+  width: 40%;
+  text-align: end;
+  font-size: 16px;
+  font-weight: 400;
+}

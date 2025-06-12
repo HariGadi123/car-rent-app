@@ -1,9 +1,16 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import styles from "./index.module.css";
 import profile from "@/app/assets/dummy_male.svg";
 import edit_icon from "@/app/assets/white_edit_cross.svg";
+import EmergencyContact from "../components/EmergencyContact/EmergencyContact";
+import AddressCard from "../components/AddressCard/AddressCard";
 
 const page = () => {
+  const [activeTab, setActiveTab] = useState(2);
+  const handleClick = (tabId: number) => {
+    setActiveTab(tabId);
+  };
   return (
     <div className={styles.mainContainer}>
       <div className={styles.wrapperContainer}>
@@ -40,7 +47,31 @@ const page = () => {
           </div>
         </div>
 
-        <div className={styles.rightContainer}>Right Container</div>
+        <div className={styles.rightContainer}>
+          <div className={styles.tabsWrapper}>
+            {tabData.map((info) => {
+              return (
+                <div
+                  key={info?.id}
+                  onClick={() => {
+                    handleClick(info?.id);
+                  }}
+                  className={`${styles.tabItem} ${
+                    info?.id === activeTab ? styles.activeTabItem : ""
+                  }`}
+                >
+                  {info?.title}
+                </div>
+              );
+            })}
+          </div>
+          <div >
+            {activeTab === 1 && <p>Documents data here</p>}
+
+            {activeTab === 2 && <EmergencyContact />}
+            {activeTab === 3 && <AddressCard />}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -68,5 +99,20 @@ const userDetails = [
     id: 4,
     title: "License Number",
     value: "DL-0420110149646",
+  },
+];
+
+const tabData = [
+  {
+    id: 1,
+    title: "Documents",
+  },
+  {
+    id: 2,
+    title: "Emergency Contact",
+  },
+  {
+    id: 3,
+    title: "Address",
   },
 ];
